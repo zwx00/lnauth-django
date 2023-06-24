@@ -8,6 +8,7 @@ from . import exceptions, service
 
 logger = logging.getLogger(__name__)
 
+
 class AuthURLProviderView(generic.View):
     def get(self, request):
         if request.GET and "action" in request.GET:

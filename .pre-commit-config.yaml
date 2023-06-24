@@ -1,0 +1,74 @@
+exclude: "docs|node_modules|migrations|.tox|^.git$"
+default_stages: [commit, push]
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: trailing-whitespace
+      - id: detect-aws-credentials
+        args: ["--allow-missing-credentials"]
+        exclude: "api/config.yml|api/testdata/config.yml"
+      - id: end-of-file-fixer
+      - id: check-yaml
+        exclude: "ecs-params*|helm*"
+      - id: check-merge-conflict
+
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+        args: ["--config=setup.cfg"]
+        additional_dependencies: [flake8-isort]
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v8.11.0" # Use the sha / tag you want to point at
+    hooks:
+      - id: eslint
+        stages: [commit]
+        additional_dependencies:
+          - eslint@7.29.0
+          - eslint-plugin-nuxt@2.0.0
+          - eslint-plugin-vue@7.12.1
+          - "@nuxtjs/eslint-config@6.0.1"
+          - "@nuxtjs/eslint-module@3.0.2"
+          - eslint-config-standard@16.0.3
+          - eslint-plugin-import@2.23.3
+          - eslint-plugin-jest
+          - eslint-plugin-node
+          - eslint-plugin-promise
+          - eslint-plugin-unicorn
+          - "@babel/eslint-parser"
+          - "@babel/core"
+        args:
+          [
+            "--fix",
+            "--ext",
+            ".js",
+            "--ext",
+            ".vue",
+            "--ignore-path",
+            "client/.gitignore",
+            "--config",
+            "client/.eslintrc.js",
+            "client",
+          ]
+        types: [file]
+        types_or: [javascript, jsx, ts, tsx, vue]
+
+
+# sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
+ci:
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

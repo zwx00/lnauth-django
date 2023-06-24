@@ -12,7 +12,7 @@ from . import exceptions
 
 def get_auth_url(action: str):
     k1 = os.urandom(32)
-    reverse_url = reverse("lnauth:ln_auth_url")
+    reverse_url = reverse("lnauth_django:ln_auth_url")
 
     cache.set(
         f"lnauth-k1-{k1.hex()}",
