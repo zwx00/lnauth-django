@@ -8,7 +8,14 @@ packages = [{include = "lnauth_django"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+django = "^3"
+bech32 = "^1.2.0"
+secp256k1 = "^0.14.0"
 
+
+[tool.poetry.group.dev.dependencies]
+coincurve = "^18.0.0"
+pytest = "^7.4.0"
 
 [build-system]
 requires = ["poetry-core"]

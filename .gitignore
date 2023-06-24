@@ -1,0 +1,4 @@
+.hypothesis
+
+# ignore pycache files
+**/__pycache__
