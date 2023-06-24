@@ -4,3 +4,7 @@ class LnAuthException(Exception):
 
 class InvalidSigException(Exception):
     pass
+
+
+class DjangoAuthException(Exception):
+    pass

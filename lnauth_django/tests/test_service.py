@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.urls import include, path
 
-from .. import service
+from .. import lnauth
 
 settings.configure(
     DEBUG=True,
@@ -39,7 +39,7 @@ def test_ln_auth_flow():
 
     # Step 2: Get auth URL
     action = "test"
-    auth_url_bech32 = service.get_auth_url(action)
+    auth_url_bech32 = lnauth.get_auth_url(action)
 
     # Step 3: Extract the k1 challenge from the URL
     _, auth_url_bytes = bech32.bech32_decode(auth_url_bech32)
@@ -51,7 +51,7 @@ def test_ln_auth_flow():
     sig = signature.hex()
 
     # Step 5: Verify the signature
-    service.verify_ln_auth(k1, sig, public_key)
+    lnauth.verify_ln_auth(k1, sig, public_key)
 
     # Cache should be empty at this point
     assert len(cache._cache) == 0
