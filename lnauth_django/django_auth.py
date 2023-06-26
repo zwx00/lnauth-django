@@ -5,7 +5,7 @@ from django.db import transaction
 from . import exceptions, models
 
 
-def django_register(request):
+def app_register(request):
     try:
         with transaction.atomic():
 
@@ -21,7 +21,7 @@ def django_register(request):
     login(request, user)
 
 
-def django_login(request):
+def app_login(request):
     try:
         user = settings.AUTH_USER_MODEL.objects.get(
             lnauthkey__linking_key=request.GET["key"]

@@ -3,7 +3,7 @@ import logging
 from django.http import JsonResponse
 from django.views import generic
 
-from . import django, exceptions, lnauth
+from . import django_auth, exceptions, lnauth
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +47,7 @@ class AuthURLView(generic.View):
         if request.GET["action"] == "login":
 
             try:
-                django.login(request)
+                django_auth.app_login(request)
             except exceptions.DjangoAuthException as e:
                 return JsonResponse(
                     {"status": "ERROR", "reason": f"Unauthorized. {e}"}, status=401
@@ -55,7 +55,7 @@ class AuthURLView(generic.View):
 
         elif request.GET["action"] == "register":
             try:
-                django.register(request)
+                django_auth.app_register(request)
             except exceptions.DjangoAuthException as e:
                 return JsonResponse(
                     {"status": "ERROR", "reason": f"Unauthorized. {e}"}, status=401
