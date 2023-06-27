@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.contrib.auth import login
-from django.db import transaction
+from django.db import IntegrityError, transaction
 
-from . import exceptions, models
+from . import exceptions
 
 
 def app_register(request):
@@ -15,7 +15,7 @@ def app_register(request):
             user.lnauthkey.linking_key = request.GET["key"]
             user.lnauthkey.save()
             user.save()
-    except models.LnAuthKey.IntegrityError:
+    except IntegrityError:
         raise exceptions.DjangoAuthException("User already registered.")
 
     login(request, user)
