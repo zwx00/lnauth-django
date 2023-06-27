@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model, login
 from django.db import IntegrityError, transaction
 
-from . import exceptions
+from . import exceptions, models
 
 User = get_user_model()
 
@@ -13,8 +13,10 @@ def app_register(request):
             user = User.objects.create_user(
                 username=request.GET["key"], password=request.GET["key"]
             )
-            user.lnauthkey.linking_key = request.GET["key"]
-            user.lnauthkey.save()
+            lnauthkey = models.LnAuthKey.objects.create(
+                user=user, linking_key=request.GET["key"]
+            )
+            lnauthkey.save()
             user.save()
     except IntegrityError:
         raise exceptions.DjangoAuthException("User already registered.")
