@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model, login
 from django.db import IntegrityError, transaction
 
@@ -30,4 +31,4 @@ def app_login(request):
     except User.DoesNotExist:
         raise exceptions.DjangoAuthException("User not registered.")
 
-    login(request, user)
+    login(request, user, backend=getattr(settings, "LNURL_AUTH_BACKEND", None))
