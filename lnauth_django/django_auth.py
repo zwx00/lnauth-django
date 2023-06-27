@@ -1,15 +1,16 @@
-from django.conf import settings
-from django.contrib.auth import login
+from django.contrib.auth import get_user_model, login
 from django.db import IntegrityError, transaction
 
 from . import exceptions
+
+User = get_user_model()
 
 
 def app_register(request):
     try:
         with transaction.atomic():
 
-            user = settings.AUTH_USER_MODEL.objects.create_user(
+            user = User.objects.create_user(
                 username=request.GET["key"], password=request.GET["key"]
             )
             user.lnauthkey.linking_key = request.GET["key"]
@@ -23,10 +24,8 @@ def app_register(request):
 
 def app_login(request):
     try:
-        user = settings.AUTH_USER_MODEL.objects.get(
-            lnauthkey__linking_key=request.GET["key"]
-        )
-    except settings.AUTH_USER_MODEL.DoesNotExist:
+        user = User.objects.get(lnauthkey__linking_key=request.GET["key"])
+    except User.DoesNotExist:
         raise exceptions.DjangoAuthException("User not registered.")
 
     login(request, user)
