@@ -10,6 +10,9 @@ logger = logging.getLogger(__name__)
 
 class AuthURLProviderView(generic.View):
     def get(self, request):
+        if not request.user.is_anonymous:
+            return JsonResponse({"message": "User already authenticated."}, status=400)
+
         if request.GET and "action" in request.GET:
             return JsonResponse(
                 {"url": lnauth.get_auth_url(request.GET["action"])}, status=200
@@ -20,6 +23,9 @@ class AuthURLProviderView(generic.View):
 
 class AuthURLView(generic.View):
     def get(self, request):
+        if not request.user.is_anonymous:
+            return JsonResponse({"message": "User already authenticated."}, status=400)
+
         if not request.GET:
             return JsonResponse({"message": "Invalid request."}, status=400)
 
