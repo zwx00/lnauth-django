@@ -52,9 +52,9 @@ Here are the settings you can set in your `settings.py` to customize Django My A
 
 - `LNURL_AUTH_REGISTER_CALLBACK` and `LNURL_AUTH_LOGIN_CALLBACK`: This is used to specify the import path of the callback function to be executed after user registration / login. Both are optional.
 
-```
-LNURL_AUTH_REGISTER_CALLBACK = 'myapp.users.ln_auth.register_callback'
-```
+    ```python
+    LNURL_AUTH_REGISTER_CALLBACK = 'myapp.users.ln_auth.register_callback'
+    ```
 
 - `LNURL_AUTH_BACKEND`: This is used to specify the authentication backend that the library should use for login. Only needed if you're using multiple authentication backends.
 
