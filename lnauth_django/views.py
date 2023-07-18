@@ -14,9 +14,13 @@ class AuthURLProviderView(generic.View):
             return JsonResponse({"message": "User already authenticated."}, status=400)
 
         if request.GET and "action" in request.GET:
-            return JsonResponse(
-                {"url": lnauth.get_auth_url(request.GET["action"])}, status=200
-            )
+            action = request.GET["action"]
+            k1 = lnauth.generate_k1()
+
+            lnauth_url = lnauth.get_auth_url(k1, action)
+            django_auth.create_and_save_session(k1, request)
+
+            return JsonResponse({"url": lnauth_url}, status=200)
         else:
             return JsonResponse({"message": "Invalid request."}, status=400)
 
@@ -43,7 +47,10 @@ class AuthURLView(generic.View):
 
         try:
             lnauth.verify_ln_auth(
-                request.GET["k1"], request.GET["sig"], request.GET["key"]
+                request.GET["k1"],
+                request.GET["sig"],
+                request.GET["key"],
+                request.GET["action"],
             )
         except exceptions.LnAuthException as e:
             return JsonResponse(

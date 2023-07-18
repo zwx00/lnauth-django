@@ -10,12 +10,15 @@ from secp256k1 import PublicKey
 from . import exceptions
 
 
-def get_auth_url(action: str):
-    k1 = os.urandom(32)
+def generate_k1():
+    return os.urandom(32)
+
+
+def get_auth_url(k1: str, action: str):
     reverse_url = reverse("lnauth_django:ln_auth_url")
 
     cache.set(
-        f"lnauth-k1-{k1.hex()}",
+        f"lnauth-k1-{k1.hex()}:{action}",
         action,
         timeout=getattr(settings, "LNURL_AUTH_K1_TIMEOUT", 60 * 60),
     )
@@ -30,7 +33,7 @@ def get_auth_url(action: str):
     return bech32_url
 
 
-def verify_ln_auth(k1: str, sig: str, linking_key: str):
+def verify_ln_auth(k1: str, sig: str, linking_key: str, action: str):
 
     try:
         k1_bytes = binascii.unhexlify(k1)
@@ -39,7 +42,7 @@ def verify_ln_auth(k1: str, sig: str, linking_key: str):
     except binascii.Error:
         raise exceptions.LnAuthException("Invalid hex.")
 
-    if not cache.delete(f"lnauth-k1-{k1_bytes.hex()}"):
+    if not cache.delete(f"lnauth-k1-{k1_bytes.hex()}:{action}"):
         raise exceptions.LnAuthException("K1 does not exist.")
 
     linking_key_pubkey = PublicKey(linking_key_bytes, raw=True)
