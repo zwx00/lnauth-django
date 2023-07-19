@@ -79,7 +79,6 @@ Pull requests and feature requests are welcome. For major changes, please open a
 
 ## TODO
 
-- More integration tests on django side
 - Some sort of rate limiting
 - Other actions, in particular `link` for linking to existing accounts
 ## License
