@@ -1,6 +1,6 @@
 # LnAuth Django
 
-This is a reusable Django application providing [Lightning Network URL authentication (LNURL Auth)](https://github.com/lnurl/luds/blob/luds/05.md) functionality.
+This is a reusable Django application providing [Lightning Network URL authentication (LNURL Auth)](https://github.com/lnurl/luds/blob/luds/04.md) functionality.
 
 Currently only `login` and `register` actions are supported.
 
