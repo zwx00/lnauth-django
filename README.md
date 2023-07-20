@@ -1,6 +1,6 @@
 # LnAuth Django
 
-This is a reusable Django application providing Lightning Network url authentication functionality.
+This is a reusable Django application providing [Lightning Network URL authentication (LNURL Auth)](https://github.com/lnurl/luds/blob/luds/05.md) functionality.
 
 Currently only `login` and `register` actions are supported.
 
@@ -71,7 +71,7 @@ This app exposes two endpoints:
 
 Both will reject authenticated requests.
 
-Any kind of frontend is out of scope for this library, but the intended approach is to render the link returned by `/ln-auth-get-url` as a QR code and allow the user to use their preferred lightning wallet to log in.
+Any kind of frontend is out of scope for this library, but the intended approach is to render the link returned by `/ln-auth-get-url` as a QR code and a copiable string and allow the user to use their preferred lightning wallet to log in.
 
 ## Contributing
 
